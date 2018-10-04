@@ -14,24 +14,16 @@
 
 package org.apache.commons.math4.filter;
 
-import org.apache.commons.statistics.distribution.ContinuousDistribution;
-import org.apache.commons.statistics.distribution.NormalDistribution;
-import org.apache.commons.math4.filter.DefaultMeasurementModel;
-import org.apache.commons.math4.filter.DefaultProcessModel;
-import org.apache.commons.math4.filter.KalmanFilter;
-import org.apache.commons.math4.filter.MeasurementModel;
-import org.apache.commons.math4.filter.ProcessModel;
-import org.apache.commons.math4.linear.Array2DRowRealMatrix;
-import org.apache.commons.math4.linear.ArrayRealVector;
-import org.apache.commons.math4.linear.MatrixDimensionMismatchException;
-import org.apache.commons.math4.linear.MatrixUtils;
-import org.apache.commons.math4.linear.RealMatrix;
-import org.apache.commons.math4.linear.RealVector;
-import org.apache.commons.rng.simple.RandomSource;
+import org.apache.commons.math4.linear.*;
 import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.numbers.core.Precision;
+import org.apache.commons.rng.simple.RandomSource;
+import org.apache.commons.statistics.distribution.ContinuousDistribution;
+import org.apache.commons.statistics.distribution.NormalDistribution;
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.apache.commons.rng.simple.RandomSource.*;
 
 /**
  * Tests for {@link KalmanFilter}.
@@ -126,7 +118,8 @@ public class KalmanFilterTest {
         RealVector pNoise = new ArrayRealVector(1);
         RealVector mNoise = new ArrayRealVector(1);
 
-        final ContinuousDistribution.Sampler rand = new NormalDistribution(0, 1).createSampler(RandomSource.create(RandomSource.WELL_19937_C));
+        //Hmm TODO
+        final ContinuousDistribution.Sampler rand = new NormalDistribution(0, 1).createSampler(create(WELL_19937_C));
 
         // iterate 60 steps
         for (int i = 0; i < 60; i++) {
@@ -392,7 +385,7 @@ public class KalmanFilterTest {
         final MeasurementModel mm = new DefaultMeasurementModel(H, R);
         final KalmanFilter filter = new KalmanFilter(pm, mm);
 
-        final ContinuousDistribution.Sampler dist = new NormalDistribution(0, measurementNoise).createSampler(RandomSource.create(RandomSource.WELL_19937_C, 1001));
+        final ContinuousDistribution.Sampler dist = new NormalDistribution(0, measurementNoise).createSampler(create(WELL_19937_C, 1001));
 
         for (int i = 0; i < iterations; i++) {
             // get the "real" cannonball position
